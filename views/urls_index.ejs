@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>URLs</title>
+</head>
+<body>
+    <header>
+      <% include ./partials/_header %>
+
+    </header>
+  <main>
+   <h1><%= title %></h1>
+   <ul>
+     <% for (var key in urls) { %>
+       <li>
+         <%= urls[key] %>
+       </li>
+     <% } %>
+    </ul>
+
+  </main>
+
+</body>
+</html>
+
