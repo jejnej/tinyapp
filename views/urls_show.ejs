@@ -7,14 +7,12 @@
     <% include ./partials/_header %>
   </header>
 
-  <main>
-  <h1>Hello This is the shortened URLS</h1>
   <h1>ShortURL: <%= shortURL%></h1>
 <form method="POST" action='/urls/<%=shortURL%>/update'>
 <input type="text" name="newURL" placeholder="new url"/>
 <input type="submit" value="update" />
 </form>
-  </main>
+
 
   <footer>
 

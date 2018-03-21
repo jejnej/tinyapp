@@ -1,3 +1,18 @@
-<div>
-    <h1>This is a header</h1>
-</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+  <% if(!username) {%>
+  <form action="/login" method="POST" style="margin:150px;"> username: <input type="text" name="username">
+  <input type="submit" value="Submit">
+</form>
+<%} else { %>
+ <h2> <%=username%> </h2>
+ <form action="/logout" method="POST">
+  <input type="submit" value="logout" name = "logout">
+</form>
+<%} %>
+
+
