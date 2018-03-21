@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <% include 'head' %>
-  <title>Shortened Urls</title>
 </head>
 <body>
   <header>
@@ -12,6 +9,11 @@
 
   <main>
   <h1>Hello This is the shortened URLS</h1>
+  <h1>ShortURL: <%= shortURL%></h1>
+<form method="POST" action='/urls/<%=shortURL%>/update'>
+<input type="text" name="newURL" placeholder="new url"/>
+<input type="submit" value="update" />
+</form>
   </main>
 
   <footer>
