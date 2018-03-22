@@ -36,6 +36,15 @@ const users = {
   }
 };
 
+// middleware
+const authenticate = (req, res, next) => {
+  if(users[req.cookies.users_id]) {
+    next()
+  } else {
+    res.redirect('/login')
+  }
+}
+
 // Routing Functions here
 
 //Main Page
@@ -114,7 +123,7 @@ app.post("/logout", (req, res) => {
 
 // New URLs
 
-app.get("/urls/new", (req, res) => {
+app.get("/urls/new", authenticate, (req, res) => {
   let templateVars = {
     user: users[req.cookies.users_id]
   };
@@ -122,10 +131,9 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
-app.post("/urls/new", (req, res) => {
-  if(!user) {
-    res.redirect("/login");
-  }
+
+app.post("/urls/new", authenticate, (req, res) => {
+
   urlDatabase[generateRandomString()] = req.body.longURL;
   res.redirect("/urls");
 });
