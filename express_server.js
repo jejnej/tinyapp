@@ -19,8 +19,9 @@ function generateRandomString() {
 }
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {url: "http://www.lighthouselabs.ca", user_id: 'userRandomID'},
+  "9sm5xK": {url: "http://www.google.com", user_id: 'user2RandomID'},
+
 };
 
 const users = {
@@ -29,7 +30,7 @@ const users = {
     email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
- "userRandomID": {
+ "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
     password: "dishwasher-funk"
@@ -47,7 +48,6 @@ const authenticate = (req, res, next) => {
 
 // Routing Functions here
 
-//Main Page
 
 
 app.get("/register", (req, res) => {
@@ -83,7 +83,7 @@ app.post("/register", (req, res) => {
 });
 
 
-app.get("/urls", (req, res) => {
+app.get("/urls", authenticate, (req, res) => {
   let title = "URLs";
   let templateVars = {
    title:title,
@@ -94,7 +94,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls",  (req, res) => {
-  urlDatabase[generateRandomString()] = req.body.longURL;
+  urlDatabase[generateRandomString()] = {url: req.body.longURL, user_id: req.cookies.users_id};
   res.redirect("/urls");
 });
 
@@ -144,7 +144,7 @@ app.post('/urls/:id/delete', (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL =  urlDatabase[req.params.shortURL];
+  let longURL =  urlDatabase[req.params.shortURL].url;
   if(longURL === undefined) {
     res.status(404).send();
     return;
@@ -152,16 +152,16 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.get("/urls/:id", (req, res) => {
+app.get("/urls/:id", authenticate, (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     urls: urlDatabase,
-    email:req.cookies.email
+    user: users[req.cookies.users_id]
   };
   res.render("urls_show",templateVars);
 });
 
-app.post('/urls/:id/update', (req, res) =>{
+app.post('/urls/:id/update', authenticate,(req, res) =>{
  let newURL = req.body.newURL;
  urlDatabase[req.params.id] = newURL;
  res.redirect('/urls');

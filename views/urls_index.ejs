@@ -13,7 +13,9 @@
    <h1><%= title %></h1>
    <ul>
      <% for (var key in urls) { %>
-       <li><%= key + " --> " + urls[key]%> <form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./urls/${key}`%>>edit</a> <input style="margin-left: 5px" type="submit" value="DELETE"></form></li>
+       <% if (urls[key].user_id === user.id) { %>
+        <li><%= key + " --> " + urls[key].url%> <form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./urls/${key}/`%>>edit</a> <input style="margin-left: 5px" type="submit" value="DELETE"></form></li>
+        <% } %>
        <% } %>
    </ul>
   </main>
