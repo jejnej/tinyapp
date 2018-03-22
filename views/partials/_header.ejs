@@ -5,11 +5,16 @@
 </head>
 <body>
 
+<%if(email){%>
+<h2> Logged In As: <%=email%> </h2>
+ <form action="/logout" method="POST"> <input type="submit" value="logout" name = "logout">
+ </form>
+<%}else {%>
+<form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./register`%>>register</a> </form>
+<form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./login`%>>login</a> </form>
+<%}%>
 
- <h2> UserId: <%=id%> </h2>
- <form action="/logout" method="POST">
-  <input type="submit" value="logout" name = "logout">
-</form>
+
 
 
 
