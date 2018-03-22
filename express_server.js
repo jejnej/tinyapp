@@ -91,7 +91,9 @@ app.post("/urls",  (req, res) => {
 
 
 // Register and Login Pages
-
+app.get("/login", (req, res) => {
+  res.render("login")
+});
 
 app.post("/login", (req, res) => {
   res.cookie("username", req.body.username);
@@ -107,7 +109,7 @@ app.post("/logout", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    username:req.cookies["username"],
+    id:req.cookies.users_id,
   };
   res.render("urls_new", templateVars);
 });
@@ -135,7 +137,7 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     urls: urlDatabase,
-    username:req.cookies["username"]
+    userid:req.cookies.users_id
   };
   res.render("urls_show",templateVars);
 });

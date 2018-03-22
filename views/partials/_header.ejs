@@ -4,17 +4,12 @@
 <head>
 </head>
 <body>
-   <% if(!id) {%>
-  <form action="/login" method="POST" style="margin:150px;"> username: <input type="text" name="username">
-  <input type="submit" value="Submit">
-</form>
-<%} else { %>
 
 
  <h2> UserId: <%=id%> </h2>
  <form action="/logout" method="POST">
   <input type="submit" value="logout" name = "logout">
 </form>
-<%} %>
+
 
 
