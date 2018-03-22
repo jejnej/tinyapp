@@ -29,12 +29,12 @@ const users = {
     email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
- "user2RandomID": {
+ "userRandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
     password: "dishwasher-funk"
   }
-}
+};
 
 // Routing Functions here
 
@@ -47,22 +47,30 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-   if(!req.body.email || !req.body.password){
-      res.status("400");
-      res.send("Invalid details!");
-   } else {
-      users.filter(function(user){
-         if(user.email === req.body.email){
-            res.send("User Already Exists! Login or choose another user id");
-         }
-      });
-      var newUser = {
-        id: generateRandomString(),
-        email: req.body.email,
-        password:req.body.password};
-      users.push(newUser);
+   for (var ids in users) {
+    for (var email in users[ids]) {
+     if (req.body.email == users[ids][email]) {
+    res.status("400");
+    res.send("This e-mail already exists. Please choose another");
+    }
    }
-  res.redirect("/urls");
+ }if(req.body.email =="" || req.body.password ==""){
+      res.status("400");
+      res.send("Please enter a valid e-mail and password");
+    } else {
+      let id = generateRandomString();
+      let email = req.body.email;
+      let password = req.body.password;
+      let newUser = {
+        id: id,
+        email: email,
+        password: password
+      };
+        users[id] = newUser;
+        console.log(users);
+       res.cookie("users_id", id);
+       res.redirect("/urls");
+}
 });
 
 
