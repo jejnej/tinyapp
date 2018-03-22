@@ -6,8 +6,8 @@
 <body>
 
 <% if(!user) { %>
-<form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./register`%>>register</a> </form>
-<form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./login`%>>login</a> </form>
+<form method="POST" %>><a href=<%=`./register`%>>register</a> </form>
+<form method="POST" %>><a href=<%=`./login`%>>login</a> </form>
 
 <% } else {%>
 <h2> Logged In As: <%= user.email %> </h2>

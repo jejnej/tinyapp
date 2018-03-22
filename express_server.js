@@ -100,7 +100,7 @@ app.post("/login", (req, res) => {
     if (users[ids].email === req.body.email && users[ids].password === req.body.password) {
       res.cookie("users_id", ids)
       res.redirect("/urls")
-      return
+      return;
     }
   }
   res.status(401).send("Please check your e-mail and try again or register for an account first.")
@@ -117,12 +117,15 @@ app.post("/logout", (req, res) => {
 app.get("/urls/new", (req, res) => {
   let templateVars = {
     user: users[req.cookies.users_id]
-    // email: users[req.cookies.users_id].email
   };
+
   res.render("urls_new", templateVars);
 });
 
 app.post("/urls/new", (req, res) => {
+  if(!user) {
+    res.redirect("/login");
+  }
   urlDatabase[generateRandomString()] = req.body.longURL;
   res.redirect("/urls");
 });
