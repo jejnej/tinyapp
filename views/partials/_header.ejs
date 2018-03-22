@@ -5,13 +5,14 @@
 </head>
 <body>
 
-<%if(email){%>
-<h2> Logged In As: <%=email%> </h2>
- <form action="/logout" method="POST"> <input type="submit" value="logout" name = "logout">
- </form>
-<%}else {%>
+<% if(!user) { %>
 <form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./register`%>>register</a> </form>
 <form method="POST" action=<%=`/urls/${key}/delete/`%>><a href=<%=`./login`%>>login</a> </form>
+
+<% } else {%>
+<h2> Logged In As: <%= user.email %> </h2>
+ <form action="/logout" method="POST"> <input type="submit" value="logout" name = "logout">
+ </form>
 <%}%>
 
 

@@ -69,7 +69,6 @@ app.post("/register", (req, res) => {
         users[id] = newUser;
         console.log(users);
        res.cookie("users_id", id);
-       res.cookie("email", email);
        res.redirect("/urls");
 }
 });
@@ -80,8 +79,7 @@ app.get("/urls", (req, res) => {
   let templateVars = {
    title:title,
    urls: urlDatabase,
-   id:req.cookies.users_id,
-   email:req.cookies.email
+   user: users[req.cookies.users_id]
  };
  res.render("urls_index", templateVars);
 });
@@ -98,8 +96,14 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("users_id", req.body.username);
-  res.redirect("/urls");
+  for (var ids in users) {
+    if (users[ids].email === req.body.email && users[ids].password === req.body.password) {
+      res.cookie("users_id", ids)
+      res.redirect("/urls")
+      return
+    }
+  }
+  res.status(401).send("Please check your e-mail and try again or register for an account first.")
 });
 
 app.post("/logout", (req, res) => {
@@ -112,7 +116,8 @@ app.post("/logout", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    email:req.cookies.email
+    user: users[req.cookies.users_id]
+    // email: users[req.cookies.users_id].email
   };
   res.render("urls_new", templateVars);
 });
