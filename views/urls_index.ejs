@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  <% include ./partials/head %>
   <title>URLs</title>
 </head>
 <body>
@@ -10,7 +10,7 @@
 
     </header>
   <main>
-   <h1><%= title %></h1>
+   <h2><%= title %></h2>
    <ul>
      <% for (var key in urls) { %>
        <% if (urls[key].user_id === user.id) { %>
