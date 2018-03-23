@@ -16,6 +16,7 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
+//Generate Random ID for new URLs as well as User ID
 function generateRandomString() {
   let randomString = "";
   let charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
@@ -43,7 +44,8 @@ const users = {
   }
 };
 
-// middleware
+// Middleware function for authenticating whether user logged in
+//Redirects to login page if login not authenticated
 const authenticate = (req, res, next) => {
   if(users[req.session.users_id]) {
     next()
@@ -52,13 +54,12 @@ const authenticate = (req, res, next) => {
   }
 }
 
+
 // Routing Functions here
 
-
-
+//Register and Login
 app.get("/register", (req, res) => {
-
-  res.render("registration");
+ res.render("registration");
 });
 
 app.post("/register", (req, res) => {
@@ -89,25 +90,6 @@ app.post("/register", (req, res) => {
 }
 });
 
-
-app.get("/urls", authenticate, (req, res) => {
-  let title = "My URLs";
-  let templateVars = {
-   title:title,
-   urls: urlDatabase,
-   user: users[req.session.users_id]
- };
- console.log(urlDatabase);
- res.render("urls_index", templateVars);
-});
-
-app.post("/urls",  (req, res) => {
-  urlDatabase[generateRandomString()] = {url: req.body.longURL, user_id: req.session.users_id};
-  res.redirect("/urls");
-});
-
-
-// Register and Login Pages
 app.get("/login", (req, res) => {
   res.render("login")
 });
@@ -131,39 +113,45 @@ app.post("/logout", (req, res) => {
 });
 
 
-   // res.redirect('/login');
+//URLs added by authenticated users displayed here
 
+app.get("/urls", authenticate, (req, res) => {
+  let title = "My URLs";
+  let templateVars = {
+   title:title,
+   urls: urlDatabase,
+   user: users[req.session.users_id]
+ };
+ console.log(urlDatabase);
+ res.render("urls_index", templateVars);
+});
 
-// New URLs
+app.post("/urls",  (req, res) => {
+  urlDatabase[generateRandomString()] = {url: req.body.longURL, user_id: req.session.users_id};
+  res.redirect("/urls");
+});
+
+//New URLs added through this route
 
 app.get("/urls/new", authenticate, (req, res) => {
   let templateVars = {
     user: users[req.session.users_id]
   };
-
   res.render("urls_new", templateVars);
 });
 
-
 app.post("/urls/new", authenticate, (req, res) => {
-
   urlDatabase[generateRandomString()] = req.body.longURL;
   res.redirect("/urls");
 });
 
+// Delete route on URLs page
 app.delete('/urls/:id', (req, res) => {
  delete urlDatabase[req.params.id];
  res.redirect('/urls');
 });
 
-app.get("/u/:shortURL", (req, res) => {
-  let longURL =  urlDatabase[req.params.shortURL].url;
-  if(longURL === undefined) {
-    res.status(404).send();
-    return;
-  }
-  res.redirect(longURL);
-});
+// Updating Short URLs to new Long URL
 
 app.get("/urls/:id", authenticate, (req, res) => {
   let templateVars = {
@@ -180,7 +168,18 @@ app.put('/urls/:id', authenticate,(req, res) =>{
  res.redirect(`/urls`);
 });
 
+// Getting to original URL from Long URL
+app.get("/u/:shortURL", (req, res) => {
+  let longURL =  urlDatabase[req.params.shortURL].url;
+  if(longURL === undefined) {
+    res.status(404).send();
+    return;
+  }
+  res.redirect(longURL);
+});
+
+
 // Port here
 app.listen(PORT, () => {
-  console.log(`Welcome to Tinyapp on ${PORT}!`);
+  console.log(`Welcome to TinyURL on ${PORT}!`);
 });
