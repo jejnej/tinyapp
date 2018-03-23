@@ -9,7 +9,7 @@
   </header>
 
   <h3>ShortURL: <%= shortURL%></h3>
-<form method="POST" action='/urls/<%=shortURL%>/update'>
+<form method="POST" action='/urls/<%=shortURL%>?_method=PUT'>
 <input type="text" name="newURL" placeholder="new url"/>
 <input type="submit" value="update" />
 </form>

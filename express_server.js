@@ -5,10 +5,11 @@ const PORT = process.env.PORT || 8080;
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
+const methodOverride = require('method-override')
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
-
+app.use(methodOverride('_method'));
 app.use(cookieSession({
   name: 'session',
   keys: ["secret"],
@@ -149,7 +150,7 @@ app.post("/urls/new", authenticate, (req, res) => {
   res.redirect("/urls");
 });
 
-app.post('/urls/:id/delete', (req, res) => {
+app.delete('/urls/:id', (req, res) => {
  delete urlDatabase[req.params.id];
  res.redirect('/urls');
 });
@@ -172,7 +173,7 @@ app.get("/urls/:id", authenticate, (req, res) => {
   res.render("urls_show",templateVars);
 });
 
-app.post('/urls/:id/update', authenticate,(req, res) =>{
+app.put('/urls/:id', authenticate,(req, res) =>{
  let newURL = req.body.newURL;
  urlDatabase[req.params.id] = newURL;
  res.redirect('/urls');
