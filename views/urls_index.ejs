@@ -18,9 +18,7 @@
         <form method="POST" action="/urls/<%=key%>?_method=DELETE">
            <input type="submit" value="Delete">
            </form>
-           <form method="POST" action="/urls/<%=key%>?_method=PUT">
-           <input type="submit" value="Update">
-           </form>
+           <a href="/urls/<%=key%>">Update</a>
         </li>
         <% } %>
        <% } %>

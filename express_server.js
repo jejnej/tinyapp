@@ -97,6 +97,7 @@ app.get("/urls", authenticate, (req, res) => {
    urls: urlDatabase,
    user: users[req.session.users_id]
  };
+ console.log(urlDatabase);
  res.render("urls_index", templateVars);
 });
 
@@ -175,8 +176,8 @@ app.get("/urls/:id", authenticate, (req, res) => {
 
 app.put('/urls/:id', authenticate,(req, res) =>{
  let newURL = req.body.newURL;
- urlDatabase[req.params.id] = newURL;
- res.redirect('/urls');
+ urlDatabase[req.params.id].url = newURL;
+ res.redirect(`/urls`);
 });
 
 // Port here
