@@ -3,19 +3,15 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const bodyParser = require("body-parser");
-// const cookieParser = require('cookie-parser')
 const cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
 
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(cookieParser());
 app.set("view engine", "ejs");
 
 app.use(cookieSession({
   name: 'session',
   keys: ["secret"],
-
-  // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
@@ -88,14 +84,13 @@ app.post("/register", (req, res) => {
         users[id] = newUser;
         console.log(users);
        req.session.users_id = newUser;
-       console.log(newUser)
        res.redirect("/urls");
 }
 });
 
 
 app.get("/urls", authenticate, (req, res) => {
-  let title = "URLs";
+  let title = "My URLs";
   let templateVars = {
    title:title,
    urls: urlDatabase,
