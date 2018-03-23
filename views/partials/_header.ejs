@@ -15,7 +15,7 @@
       </a>
 <ul class = "navbar-nav" id="navbar-right">
 <% if(user) { %>
-<li><h4> Logged In: <%= user.email %> </h4>
+<li><h4 id="logged-in"> Logged In: <br><%= user.email %> </h4>
  <form action="/logout" method="POST"> <input type="submit" value="logout" name = "logout">
  </form>
 <%}%> </li>
