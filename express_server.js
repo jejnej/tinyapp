@@ -38,7 +38,6 @@ const urlDatabase = {
   },
 };
 
-
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -86,14 +85,13 @@ app.post("/register", (req, res) => {
     let id = generateRandomString();
     let email = req.body.email;
     let password = bcrypt.hashSync(req.body.password, 15);
-    console.log(password)
     let newUser = {
       id: id,
       email: email,
       password: password
     };
     users[id] = newUser;
-    console.log(users);
+    // console.log(users);
     req.session.users_id = newUser;
     res.redirect("/urls");
   }
@@ -111,13 +109,13 @@ app.post("/login", (req, res) => {
       return;
     }
   }
-  res.status(401).send("Please check your e-mail and try again or register for an account first.")
+  res.status(401).send("Please check your e-mail and try again or register for an account first.");
 });
 
 app.post("/logout", (req, res) => {
   req.session = null;
   // req.session.destroy();
-  console.log("user logged out.")
+  // console.log("user logged out.")
   res.redirect("/urls");
 });
 
@@ -184,7 +182,7 @@ app.put('/urls/:id', authenticate, (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL].url;
   if (longURL === undefined) {
-    res.status(404).send();
+    res.status(404).send("This URL does not exist. Please check and try again");
     return;
   }
   res.redirect(longURL);
