@@ -11,6 +11,7 @@
     </header>
   <main>
    <h2><%= title %></h2>
+  <a href=<%=`/urls/new`%>>Click to start shortening your URLs</a>
    <ul>
      <% for (var key in urls) { %>
        <% if (urls[key].user_id === user.id) { %>
